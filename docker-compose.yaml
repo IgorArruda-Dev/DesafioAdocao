@@ -1,0 +1,46 @@
+services:
+  front:
+    container_name: frontend
+    build: ./frontAdocaoIgor/.
+    ports:
+      - "3000:3000"
+    networks:
+      - desafio_adocao
+    depends_on:
+      - api
+
+  api:
+    container_name: api-adoption
+    build: ./desafioAdocaoIgor/.
+    ports:
+      - "8080:8080"
+    networks:
+      - desafio_adocao
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    container_name: my-sql
+    image: mysql:8.0
+    ports:
+      - '3304:3306'
+    networks:
+      - desafio_adocao
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: animals
+      MYSQL_ROOT_HOST: '%'
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - ./.docker/mysql:/var/lib/mysql:rw
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 2s
+      timeout: 20s
+      retries: 10
+
+networks:
+  desafio_adocao:
+    external: true

@@ -1,0 +1,6 @@
+.idea
+./frontAdocaoIgor/.node_modules
+./frontAdocaoIgor/.next
+./desafioAdocaoIgor/target
+./desafioAdocaoIgor/.idea
+./desafioAdocaoIgor/.docker/mysql/*
